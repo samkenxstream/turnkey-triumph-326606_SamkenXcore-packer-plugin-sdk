@@ -50,7 +50,14 @@ func (s *StepConnectSSH) Run(ctx context.Context, state multistep.StateBag) mult
 	}()
 
 	log.Printf("[INFO] Waiting for SSH, up to timeout: %s", s.Config.SSHTimeout)
-	timeout := time.After(s.Config.SSHTimeout)
+	var timeout <-chan time.Time
+	// Only setup a timeout when it is specified in the configs
+	if s.Config.SSHTimeout != 0 {
+		timeout = time.After(s.Config.SSHTimeout)
+	} else {
+		timeout = make(<-chan time.Time)
+	}
+
 	for {
 		// Wait for either SSH to become available, a timeout to occur,
 		// or an interrupt to come through.
@@ -231,14 +238,15 @@ func (s *StepConnectSSH) waitForSSH(state multistep.StateBag, ctx context.Contex
 				handshakeAttempts += 1
 			}
 
-			if handshakeAttempts < s.Config.SSHHandshakeAttempts {
-				// Try to connect via SSH a handful of times. We sleep here
-				// so we don't get a ton of authentication errors back to back.
-				time.Sleep(2 * time.Second)
-				continue
+			if s.Config.SSHHandshakeAttempts > 0 &&
+				handshakeAttempts >= s.Config.SSHHandshakeAttempts {
+				return nil, err
 			}
 
-			return nil, err
+			// Try to connect via SSH a handful of times. We sleep here
+			// so we don't get a ton of authentication errors back to back.
+			time.Sleep(2 * time.Second)
+			continue
 		}
 
 		break
