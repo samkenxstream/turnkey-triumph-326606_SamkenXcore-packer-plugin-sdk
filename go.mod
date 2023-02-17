@@ -29,7 +29,7 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-getter/gcs/v2 v2.1.0
 	github.com/hashicorp/go-getter/s3/v2 v2.1.0
-	github.com/hashicorp/go-getter/v2 v2.1.0
+	github.com/hashicorp/go-getter/v2 v2.2.0
 	github.com/hashicorp/go-hclog v0.16.2 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-msgpack v0.5.5 // indirect
@@ -96,6 +96,7 @@ require (
 	github.com/hashicorp/vault/sdk v0.2.1 // indirect
 	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/klauspost/compress v1.11.2 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
